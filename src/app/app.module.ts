@@ -10,7 +10,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditBookComponent } from './edit-book/edit-book.component';
 import { EditReaderComponent } from './edit-reader/edit-reader.component';
 import { BookTrackerErrorHandlerService } from './core/book-tracker-error-handler.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AddHeaderInterceptor } from './core/add-header.interceptor';
+import { LogResponseInterceptor } from './core/log-response.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     AddReaderComponent
   ],
   providers: [
-    { provide: ErrorHandler, useClass: BookTrackerErrorHandlerService }
+    { provide: ErrorHandler, useClass: BookTrackerErrorHandlerService },
+    /* Interceptors Order Matter!, the request is immutible! use clone method for any change*/
+    { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LogResponseInterceptor, multi: true },
   ],
   imports: [
     BrowserModule,
