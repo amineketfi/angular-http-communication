@@ -18,7 +18,10 @@ export class EditBookComponent implements OnInit {
 
   ngOnInit() {
     let bookID: number = parseInt(this.route.snapshot.params['id']);
-    this.selectedBook = this.dataService.getBookById(bookID);
+    this.dataService.getBookById(bookID).subscribe(
+      (book: Book) => this.selectedBook = book,
+      (err) => console.error(err)
+    );
   }
 
   setMostPopular(): void {
@@ -26,6 +29,10 @@ export class EditBookComponent implements OnInit {
   }
 
   saveChanges(): void {
-    console.warn('Save changes to book not yet implemented.');
+    this.dataService.updateBook(this.selectedBook)
+      .subscribe(
+        (data: void) => console.log(`${this.selectedBook.title} updated successfully.`),
+        (err: any) => console.log(err)
+      );
   }
 }
