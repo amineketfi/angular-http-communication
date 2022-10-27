@@ -9,6 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { OldBook } from 'app/models/oldBook';
 import { CONTENT_TYPE } from './add-header.interceptor';
+import { CACHABEALE } from './cache.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class DataService {
 
   getAllBooks(): Observable<Book[] | BookTrackerError> {
     return this.http.get<Book[]>('api/books', {
-      context: new HttpContext().set(CONTENT_TYPE, 'application/xml')
+      context: new HttpContext().set(CACHABEALE, false)
     })
       .pipe(
         catchError(err => this.handleHttpError(err))

@@ -13,6 +13,7 @@ import { BookTrackerErrorHandlerService } from './core/book-tracker-error-handle
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddHeaderInterceptor } from './core/add-header.interceptor';
 import { LogResponseInterceptor } from './core/log-response.interceptor';
+import { CacheInterceptor } from './core/cache.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LogResponseInterceptor } from './core/log-response.interceptor';
     /* Interceptors Order Matter!, the request is immutible! use clone method for any change*/
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LogResponseInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
   ],
   imports: [
     BrowserModule,
